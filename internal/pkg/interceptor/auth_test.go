@@ -30,7 +30,7 @@ func TestAuthInterceptor(t *testing.T) {
 	_, err = i.Authorize(context.Background(), "Create")
 	require.Error(t, err)
 
-	token, err := jwtManager.Generate(uint64(1))
+	token, err := jwtManager.GenerateWithoutRole(uint64(1))
 	require.NoError(t, err)
 
 	header := metadata.New(map[string]string{headerAuthorize: expectedScheme + " " + token})

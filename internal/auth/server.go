@@ -24,7 +24,7 @@ type Server struct {
 }
 
 func (s Server) GenerateToken(ctx context.Context, req *v1.GenerateTokenRequest) (*v1.GenerateTokenResponse, error) {
-	token, err := s.jwtManager.Generate(req.GetUserId())
+	token, err := s.jwtManager.GenerateWithoutRole(req.GetUserId())
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to generate token")
 	}
@@ -49,7 +49,7 @@ func (s Server) RefreshToken(ctx context.Context, req *v1.RefreshTokenRequest) (
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, "invalid token")
 	}
-	token, err := s.jwtManager.Generate(claims.ID)
+	token, err := s.jwtManager.GenerateWithoutRole(claims.ID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to generate token")
 	}

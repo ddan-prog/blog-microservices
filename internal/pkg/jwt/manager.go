@@ -25,13 +25,15 @@ type Manager struct {
 }
 
 type UserClaims struct {
-	ID uint64 `json:"id"`
+	ID   uint64 `json:"id"`
+	Role string `json:"role"`
 	jwt.StandardClaims
 }
 
-func (manager *Manager) Generate(id uint64) (string, error) {
+func (manager *Manager) Generate(id uint64, role string) (string, error) {
 	claims := UserClaims{
-		ID: id,
+		ID:   id,
+		Role: role,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(manager.expires).Unix(),
 		},
@@ -39,6 +41,10 @@ func (manager *Manager) Generate(id uint64) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(manager.secret))
+}
+
+func (manager *Manager) GenerateWithoutRole(id uint64) (string, error) {
+	return manager.Generate(id, "user")
 }
 
 func (manager *Manager) Validate(tokenStr string) (*UserClaims, error) {

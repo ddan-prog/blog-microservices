@@ -121,39 +121,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "comment": {
-                  "type": "object",
-                  "properties": {
-                    "content": {
-                      "type": "string"
-                    },
-                    "postId": {
-                      "type": "string",
-                      "format": "uint64"
-                    },
-                    "userId": {
-                      "type": "string",
-                      "format": "uint64"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "post": {
-                      "$ref": "#/definitions/v1Post"
-                    },
-                    "user": {
-                      "$ref": "#/definitions/v1User"
-                    }
-                  }
-                }
-              }
+              "$ref": "#/definitions/BlogServiceUpdateCommentBody"
             }
           }
         ],
@@ -351,39 +319,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "post": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string"
-                    },
-                    "content": {
-                      "type": "string"
-                    },
-                    "userId": {
-                      "type": "string",
-                      "format": "uint64"
-                    },
-                    "commentsCount": {
-                      "type": "integer",
-                      "format": "int64"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "user": {
-                      "$ref": "#/definitions/v1User"
-                    }
-                  }
-                }
-              }
+              "$ref": "#/definitions/BlogServiceUpdatePostBody"
             }
           }
         ],
@@ -458,6 +394,76 @@
     }
   },
   "definitions": {
+    "BlogServiceUpdateCommentBody": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "postId": {
+              "type": "string",
+              "format": "uint64"
+            },
+            "userId": {
+              "type": "string",
+              "format": "uint64"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "post": {
+              "$ref": "#/definitions/v1Post"
+            },
+            "user": {
+              "$ref": "#/definitions/v1User"
+            }
+          }
+        }
+      }
+    },
+    "BlogServiceUpdatePostBody": {
+      "type": "object",
+      "properties": {
+        "post": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string",
+              "format": "uint64"
+            },
+            "commentsCount": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "user": {
+              "$ref": "#/definitions/v1User"
+            }
+          }
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
