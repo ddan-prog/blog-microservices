@@ -12,6 +12,7 @@ service AuthService {
 
 message GenerateTokenRequest {
   uint64 user_id = 1;
+  string role = 2;
 }
 
 message GenerateTokenResponse {

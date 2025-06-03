@@ -112,12 +112,23 @@ func (s Server) CreateUser(ctx context.Context, req *v1.CreateUserRequest) (*v1.
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to bcrypt generate password: %v", err)
 	}
+
+	role := req.GetUser().GetRole()
+	if role == "" {
+		role = GetDefaultRole().String()
+	} else {
+		if !UserRole(role).IsValid() {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid role: %s", role)
+		}
+	}
+
 	user := &User{
 		UUID:     uuid.New().String(),
 		Username: req.GetUser().GetUsername(),
 		Email:    req.GetUser().GetEmail(),
 		Avatar:   req.GetUser().GetAvatar(),
 		Password: password,
+		Role:     role,
 	}
 	err = s.repo.Create(ctx, user)
 	if err != nil {
@@ -152,6 +163,12 @@ func (s Server) UpdateUser(ctx context.Context, req *v1.UpdateUserRequest) (*v1.
 		}
 		user.Password = password
 	}
+	if req.GetUser().GetRole() != "" {
+		if !UserRole(req.GetUser().GetRole()).IsValid() {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid role: %s", req.GetUser().GetRole())
+		}
+		user.Role = req.GetUser().GetRole()
+	}
 	err = s.repo.Update(ctx, user)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to update user: %v", err)
@@ -183,6 +200,7 @@ func entityToProtobuf(user *User) *v1.User {
 		Username:  user.Username,
 		Email:     user.Email,
 		Avatar:    user.Avatar,
+		Role:      user.Role,
 		CreatedAt: timestamppb.New(user.CreatedAt),
 		UpdatedAt: timestamppb.New(user.UpdatedAt),
 	}

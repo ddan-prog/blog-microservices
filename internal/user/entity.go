@@ -1,8 +1,9 @@
 package user
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -12,6 +13,7 @@ type User struct {
 	Email     string         `json:"email"`
 	Avatar    string         `json:"avatar"`
 	Password  string         `json:"password"`
+	Role      string         `json:"role"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
